@@ -5,9 +5,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace labs3
 {
@@ -23,7 +24,7 @@ namespace labs3
         private string passport;
         private string comment;
 
-        public Client(int id, string firstName, string lastName, string middleName, string phone, string email, string birthday, string passport, string comment) 
+        public Client(int id, string firstName, string lastName, string middleName, string phone, string email, string birthday, string passport, string comment)
         {
             ValidateString(firstName, "имя", 20);
             ValidateString(lastName, "фамилия", 20);
@@ -153,6 +154,31 @@ namespace labs3
             {
                 return false;
             }
+        }
+        public Client(string json)
+        {
+            var clientData = JsonConvert.DeserializeObject<Client>(json);
+
+            if (clientData != null)
+            {
+                id = clientData.id;
+                firstName = clientData.firstName;
+                lastName = clientData.lastName;
+                phone = clientData.phone;
+                passport = clientData.passport;
+                email = clientData.email;
+                birthday = clientData.birthday;
+                middleName = clientData.middleName;
+                comment = clientData.comment;
+            }
+        }
+
+        public string toJson()
+        {
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            Client client = this;
+            string jsonString = JsonConvert.SerializeObject(client, Formatting.Indented);
+            return jsonString;
         }
 
 
