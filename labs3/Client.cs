@@ -1,5 +1,5 @@
-﻿using labs3;
-using System;
+﻿using System;
+using labs3;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -23,34 +23,14 @@ namespace labs3
         private string passport;
         private string comment;
 
-        public Client(int id, string firstName, string lastName, string middleName, string phone, string email, string birthday, string passport, string comment)
+        public Client(int id, string firstName, string lastName, string middleName, string phone, string email, string birthday, string passport, string comment) 
         {
+            ValidateString(firstName, "имя", 20);
+            ValidateString(lastName, "фамилия", 20);
             ValidatePhone(phone);
             ValidatePassport(passport);
-            for (int i = 0; i < firstName.Length; i++)
-            {
-                char ch = firstName[i];
-                if (!isValidCharacter(ch)) throw new ArgumentException("Поле " + firstName + " заполнено не корректно");
-
-            }
-            for (int i = 0; i < lastName.Length; i++)
-            {
-                char ch = lastName[i];
-                if (!isValidCharacter(ch)) throw new ArgumentException("Поле " + lastName + " заполнено не корректно");
-
-            }
-            for (int i = 0; i < middleName.Length; i++)
-            {
-                char ch = middleName[i];
-                if (!isValidCharacter(ch)) throw new ArgumentException("Поле " + middleName + " заполнено не корректно");
-
-            }
-            for (int i = 0; i < comment.Length; i++)
-            {
-                char ch = comment[i];
-                if (!isValidCharacter(ch)) throw new ArgumentException("Поле " + comment + " заполнено не корректно");
-
-            }
+            ValidateString(middleName, "отчество", 20);
+            ValidateString(comment, "комментарий", 500);
             ValidateDate(birthday);
             if (!IsValidEmail(email)) throw new ArgumentException("Email заполнен не корректно");
             this.id = id;
@@ -75,53 +55,15 @@ namespace labs3
         public int getId() { return id; }
 
 
-        public void SetLastName(string lName)
-        {
-            for (int i = 0; i < lName.Length; i++)
-            {
-                char ch = lName[i];
-                if (!isValidCharacter(ch)) throw new ArgumentException("Поле " + lName + " заполнено не корректно");
-
-            }
-            this.lastName = lName;
-        }
-        public void SetFirstName(string fName)
-        {
-            for (int i = 0; i < fName.Length; i++)
-            {
-                char ch = fName[i];
-                if (!isValidCharacter(ch)) throw new ArgumentException("Поле " + fName + " заполнено не корректно");
-
-            }
-            this.firstName = fName;
-        }
+        public void SetLastName(string lName) { ValidateString(lName, "фамилия", 20); this.lastName = lName; }
+        public void SetFirstName(string fName) { ValidateString(fName, "имя", 20); this.firstName = fName; }
         public void SetId(int newID) { if (isValidID(newID)) this.id = newID; }
         public void SetPhone(string newPhone) { ValidatePhone(newPhone); this.phone = newPhone; }
         public void SetPassport(string newPassport) { ValidatePassport(newPassport); this.passport = newPassport; }
-        public void SetCommentl(string NewComment)
-        {
-            for (int i = 0; i < NewComment.Length; i++)
-            {
-                char ch = NewComment[i];
-                if (!isValidCharacter(ch)) throw new ArgumentException("Поле " + NewComment + " заполнено не корректно");
-
-            }
-            this.comment = NewComment;
-        }
-        public void SetMiddleName(string NewMiddlename)
-        {
-            for (int i = 0; i < NewMiddlename.Length; i++)
-            {
-                char ch = NewMiddlename[i];
-                if (!isValidCharacter(ch)) throw new ArgumentException("Поле " + NewMiddlename + " заполнено не корректно");
-
-            }
-            this.middleName = NewMiddlename;
-        }
+        public void SetCommentl(string NewComment) { ValidateString(NewComment, "комментарий", 30); this.comment = NewComment; }
+        public void SetMiddleName(string NewMiddlename) { ValidateString(NewMiddlename, "отчество", 100); this.middleName = NewMiddlename; }
         public void SetBirthday(string newBirthday) { ValidateDate(newBirthday); ; this.birthday = newBirthday; }
         public void SetEmail(string newEmail) { if (!IsValidEmail(email)) throw new ArgumentException("Email заполнен не корректно"); this.email = newEmail; }
-
-
 
 
         private static void ValidatePassport(string passport)
@@ -136,7 +78,17 @@ namespace labs3
             }
         }
 
+        public static void ValidateString(String str, string name, int len)
+        {
+            if (!isValidCount(str, len)) throw new ArgumentException("В поле " + name + " превышено количество допустимых символов");
+            for (int i = 0; i < str.Length; i++)
+            {
+                char ch = str[i];
+                if (!isValidCharacter(ch)) throw new ArgumentException("Поле " + name + " заполнено не корректно");
 
+            }
+
+        }
         private static bool isValidCharacter(char ch)
         {
             return (ch >= 'A' && ch <= 'Z') ||
