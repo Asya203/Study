@@ -23,7 +23,7 @@ namespace labs3
         private string passport;
         private string comment;
 
-        public Client(int id, string firstName, string lastName, string middleName, string phone, string email, string birthday, string passport, string comment) //: base(id, firstName, lastName, phone, passport)
+        public Client(int id, string firstName, string lastName, string middleName, string phone, string email, string birthday, string passport, string comment) 
         {
             ValidateString(firstName, "имя", 20);
             ValidateString(lastName, "фамилия", 20);
@@ -358,5 +358,6 @@ namespace labs3
         }
 
     }
+
 
 }
