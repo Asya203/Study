@@ -9,15 +9,17 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Text.Json;
 using Newtonsoft.Json;
+using Microsoft.Graph.Models.Security;
+using Microsoft.Graph.Models;
 
 namespace labs3
 {
     public class Client : ShortClient
     {
-        private string middleName;
-        private string comment;
-        private string email;
-        private string birthday;
+        public string middleName;
+        public string comment;
+        public string email;
+        public string birthday;
 
         public Client(int id, string firstName, string lastName, string middleName, string phone, string email, string birthday, string passport, string comment) : base(id, firstName, lastName, phone, passport)
         {
@@ -134,6 +136,4 @@ namespace labs3
 
         }
     }
-
-
 }

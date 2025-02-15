@@ -10,11 +10,12 @@ namespace labs3
 {
     public class ShortClient
     {
-        private int id;
-        private string lastName;
-        private string firstName;
-        private string phone;
-        private string passport;
+
+        public int id;
+        public string lastName;
+        public string firstName;
+        public string phone;
+        public string passport;
 
         public ShortClient(int id, string firstName, string lastName, string phone, string passport)
         {
@@ -22,6 +23,7 @@ namespace labs3
             ValidateString(lastName, "фамилия", 20);
             ValidatePhone(phone);
             ValidatePassport(passport);
+
             this.id = id;
             this.lastName = lastName;
             this.firstName = firstName;
@@ -35,13 +37,11 @@ namespace labs3
         public string GetPassport() => passport;
         public int getId() { return id; }
 
-
         public void SetLastName(string lName) { ValidateString(lName, "фамилия", 20); this.lastName = lName; }
         public void SetFirstName(string fName) { ValidateString(fName, "имя", 20); this.firstName = fName; }
         public void SetId(int newID) { if (isValidID(newID)) this.id = newID; }
         public void SetPhone(string newPhone) { ValidatePhone(newPhone); this.phone = newPhone; }
         public void SetPassport(string newPassport) { ValidatePassport(newPassport); this.passport = newPassport; }
-
 
         public virtual string toMyString()
         {
@@ -73,9 +73,7 @@ namespace labs3
             {
                 char ch = str[i];
                 if (!isValidCharacter(ch)) throw new ArgumentException("Поле " + name + " заполнено не корректно");
-
             }
-
         }
         private static bool isValidCharacter(char ch)
         {
@@ -97,16 +95,12 @@ namespace labs3
             {
                 char ch = phone[i];
                 if (!isvalidNumber(ch)) throw new ArgumentException("Поле с телефонными данными заполнено не корректно");
-
             }
-
         }
-
         public static bool isvalidNumber(char ch)
         {
             return (ch >= '0' && ch <= '9');
         }
-
         private bool isValidID(int id)
         {
             if (id >= 0)
@@ -118,7 +112,6 @@ namespace labs3
                 throw new ArgumentException("id не корректен");
             }
         }
-
         public ShortClient(string json)
         {
             var clientData = JsonSerializer.Deserialize<ShortClient>(json);
