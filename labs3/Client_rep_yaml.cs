@@ -9,13 +9,12 @@ using YamlDotNet.Serialization.NamingConventions;
 
 namespace labs3
 {
-    public class Client_rep_yaml
+    public class Client_rep_yaml : Client_rep
     {
-        private List<Client> clients = new List<Client>();
         private const string filePath = "C:\\Ycheba\\C#\\Panesh1\\Panesh1\\clients.yaml";
         private int nextId = 1;
 
-        public void LoadClients()
+        public override void LoadFromFile()
         {
             if (File.Exists(filePath))
             {
@@ -27,8 +26,7 @@ namespace labs3
                 nextId = clients.Count > 0 ? clients.Max(c => c.getId()) + 1 : 1;
             }
         }
-
-        public void SaveClients()
+        public override void SaveToFile()
         {
             var serializer = new SerializerBuilder()
                 .WithNamingConvention(CamelCaseNamingConvention.Instance)
@@ -36,96 +34,5 @@ namespace labs3
             var yaml = serializer.Serialize(clients);
             File.WriteAllText(filePath, yaml);
         }
-
-        public Client GetClientById(int id)
-        {
-            return clients.FirstOrDefault(c => c.getId() == id);
-        }
-
-        public List<Client> GetKNSortList(int n, int k)
-        {
-            return clients.Skip(n).Take(k).ToList();
-        }
-
-        public void GetInfolist(List<Client> clientsinfo)
-        {
-            for (int i = 0; i < clientsinfo.Count; i++)
-            {
-                Console.WriteLine(clientsinfo[i].toMyString());
-            }
-        }
-        public void GetInfolist()
-        {
-            for (int i = 0; i < clients.Count; i++)
-            {
-                Console.WriteLine(clients[i].toMyString());
-            }
-
-        }
-
-        public void SortByField(string fieldName)
-        {
-            switch (fieldName.ToLower())
-            {
-                case "lastname":
-                    clients.Sort((x, y) => string.Compare(x.GetLastName(), y.GetLastName()));
-                    break;
-                case "firstname":
-                    clients.Sort((x, y) => string.Compare(x.GetFirstName(), y.GetFirstName()));
-                    break;
-                case "passport":
-                    clients.Sort((x, y) => string.Compare(x.GetPassport(), y.GetPassport()));
-                    break;
-                case "middlename":
-                    clients.Sort((x, y) => string.Compare(x.GetMiddleName(), y.GetMiddleName()));
-                    break;
-                case "email":
-                    clients.Sort((x, y) => string.Compare(x.GetEmail(), y.GetEmail()));
-                    break;
-                case "birthday":
-                    clients.Sort((x, y) => string.Compare(x.GetBirthday(), y.GetBirthday()));
-                    break;
-                case "phone":
-                    clients.Sort((x, y) => string.Compare(x.GetPhone(), y.GetPhone()));
-                    break;
-
-                default:
-                    throw new ArgumentException("Неверное имя поля для сортировки.");
-            }
-        }
-
-        public void AddClient(Client client)
-        {
-            client.SetId(nextId++);
-            clients.Add(client);
-            SaveClients();
-        }
-
-        public void UpdateClient(int id, Client updatedClient)
-        {
-            var index = clients.FindIndex(c => c.getId() == id);
-            if (index != -1)
-            {
-                updatedClient.SetId(id);
-                clients[index] = updatedClient;
-                SaveClients();
-            }
-        }
-
-        public void DeleteClient(int id)
-        {
-            var clientToRemove = clients.FirstOrDefault(c => c.getId() == id);
-            if (clientToRemove != null)
-            {
-                clients.Remove(clientToRemove);
-                SaveClients();
-            }
-        }
-
-        public int GetCount()
-        {
-            return clients.Count;
-        }
     }
-
 }
